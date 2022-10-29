@@ -10,9 +10,14 @@
           <h3>{{p.n}}</h3>
           價格：$NTD{{p.price}}
         </div>
-        <a class="ui bottom attached button" :class = "{pink: !isMine(p), purple: isMine(p)}" tabindex="0" @click="toggle(p)">
-          {{ !isMine(p) ? '加入收藏' : '從收藏中移除' }} <i class="heart icon"/>
-        </a>
+        <div class="ui bottom attached buttons">
+          <a class="ui button" :class = "{pink: !isMine(p), purple: isMine(p)}" tabindex="0" @click="toggle(p)">
+            {{ !isMine(p) ? '加入收藏' : '從收藏中移除' }} <i class="heart icon"/>
+          </a>
+          <a class="ui button" :class = "{green: !inCart(p), blue: inCart(p)}" tabindex="0" @click="toggleCart(p)">
+            {{ !inCart(p) ? '加入購物車' : '從購物車中移除' }} <i class="cart icon"/>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -28,6 +33,33 @@ export default {
     title: '歡迎'
   },
   methods: {
+    toggleCart (p) {
+      var mycarts = JSON.parse(localStorage.getItem('mycarts') || '[]')
+      if ((mycarts || []).filter(function (o) {
+        return o.n === p.n
+      }).length > 0) {
+        const ans = (mycarts || []).filter(function (o) {
+          return o.n !== p.n
+        })
+        mycarts = [ ...ans]
+        localStorage.setItem('mycarts', JSON.stringify(mycarts));
+      } else {
+        mycarts.push(p)
+        localStorage.setItem('mycarts', JSON.stringify(mycarts));
+      }
+      this.mycarts = JSON.parse(localStorage.getItem('mycarts') || '[]')
+      this.$forceUpdate()
+    },
+    inCart (p) {
+      const mycarts = JSON.parse(localStorage.getItem('mycarts') || '[]')
+      if ((mycarts || []).filter(function (o) {
+        return o.n === p.n
+      }).length > 0) {
+        return true
+      } else {
+        return false
+      }
+    },
     toggle (p) {
       var mypets = JSON.parse(localStorage.getItem('mypets') || '[]')
       if ((mypets || []).filter(function (o) {

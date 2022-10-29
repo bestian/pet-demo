@@ -4,7 +4,10 @@
   </metainfo>
   <nav class="ui inverted menu">
     <router-link class="item" to="/"><i class="home icon"/></router-link>
-    <router-link class="item" to="/about">我的收藏</router-link>
+    <router-link class="item" to="/about">我的收藏<i class="heart icon"/></router-link>
+    <div class="right menu">
+      <router-link class="item" to="/cart">我的購物車<i class="cart icon"/></router-link>
+    </div>
   </nav>
   <router-view/>
 </template>
